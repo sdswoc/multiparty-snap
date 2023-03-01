@@ -10,6 +10,7 @@ uint requiredMajority;
 struct coFounder {
     string name;
     uint stakes;
+    address coFounderAddress;
 }
 
 
@@ -33,7 +34,7 @@ struct shareHolder { // shareholders with the respective stakes
     uint stakes;
 }
 
-constructor (string memory _name, uint _requiredMajority, coFounder [] memory _coFounders, address [] memory _addressOfCoFounder) { // sets the organization name and majority mark along with the wallet address
+constructor (string memory _name, uint _requiredMajority, coFounder [] memory _coFounders) { // sets the organization name and majority mark along with the wallet address
 
 orgName = _name;
 requiredMajority = _requiredMajority;
@@ -43,7 +44,7 @@ for (uint i = 0; i < _coFounders.length; i++){
     }
 
 for (uint i = 0; i < _coFounders.length; i++){
-    addressToCoFounder[_addressOfCoFounder[i]] = coFounders[i];
+    addressToCoFounder[_coFounders[i].coFounderAddress] = coFounders[i];
     }
     
 }
