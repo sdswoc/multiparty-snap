@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.8;
 
-contract MultipartyPayments {
+contract Multisignature {
     
 string public orgName;
-uint stakesInFavour = 0;
-uint requiredMajority;
+uint private stakesInFavour = 0;
+uint private requiredMajority;
 
-struct coFounder {
+struct coFounder { //cofounder has the rights to add a new stakeholder into the organisation
     string name;
     uint stakes;
     address coFounderAddress;
@@ -44,7 +44,7 @@ for (uint i = 0; i < _coFounders.length; i++){
     }
 
 for (uint i = 0; i < _coFounders.length; i++){
-    addressToCoFounder[_coFounders[i].coFounderAddress] = coFounders[i];
+    addressToCoFounder[_coFounders[i].coFounderAddress] = _coFounders[i];
     }
     
 }
@@ -52,6 +52,7 @@ for (uint i = 0; i < _coFounders.length; i++){
 function addStakeHolder (string memory _name, uint _stake, address _stakeHolderAddress) public { // adds stakeholders
 
 require(addressToCoFounder[msg.sender].stakes > 0);
+require(addressToStakeholder[_stakeHolderAddress].stakes == 0);
 addressToStakeholder[_stakeHolderAddress] = shareHolder(_name, _stake);
 emit NewStakeHolder (_name, _stake);
 }
@@ -68,11 +69,10 @@ if (_inFavour){
         uint _stake = addressToStakeholder[msg.sender].stakes;
         inFavour.push(shareHolder(_name, _stake));
     }
-    else {
+    else if (addressToCoFounder[msg.sender].stakes > 0) {
         string memory _name = addressToCoFounder[msg.sender].name;
         uint _stake = addressToCoFounder[msg.sender].stakes;
-        inFavourCoFounders.push(coFounder(_name, _stake));
-
+        inFavourCoFounders.push(coFounder(_name, _stake,msg.sender));
     }
     stakeHolderVoted[msg.sender] = true; // mark the stakeHolder as voted
 }
@@ -83,13 +83,14 @@ else {
 
 }
 
-function evaluateResults () public {
+function evaluateResults () public returns(uint){
     for (uint i = 0; i < inFavour.length; i++){
         stakesInFavour += inFavour[i].stakes;
     }
     for (uint j = 0; j < inFavourCoFounders.length; j++){
         stakesInFavour += inFavourCoFounders[j].stakes;
     }
+    return stakesInFavour;
 }
 
 
@@ -97,20 +98,18 @@ function paymentToAddress (uint _amount, address payable _sendTo) public payable
 
 emit PaymentInitiated (msg.sender, _amount);
 require(addressToStakeholder[msg.sender].stakes > 0 || addressToCoFounder[msg.sender].stakes > 0);
-
 require(address(this).balance >= _amount, "Insufficient balance for the transaction to occur.");
 
 if (stakesInFavour >= requiredMajority){
 
 uint TransferAmount = _amount;
 (_sendTo).transfer(TransferAmount);
-
 emit PaymentSuccessful(_amount, _sendTo);
 
 }
 
 else {
     emit PaymentUnsuccessful();
-        }
     }
+}
 }
