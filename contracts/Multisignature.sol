@@ -4,8 +4,8 @@ pragma solidity ^0.8.8;
 contract Multisignature {
     
 string public orgName;
-uint private stakesInFavour = 0;
-uint private requiredMajority;
+uint public stakesInFavour = 0;
+uint public requiredMajority;
 
 struct coFounder { //cofounder has the rights to add a new stakeholder into the organisation
     string name;
@@ -72,7 +72,8 @@ if (_inFavour){
     else if (addressToCoFounder[msg.sender].stakes > 0) {
         string memory _name = addressToCoFounder[msg.sender].name;
         uint _stake = addressToCoFounder[msg.sender].stakes;
-        inFavourCoFounders.push(coFounder(_name, _stake,msg.sender));
+        address _address = msg.sender;
+        inFavourCoFounders.push(coFounder(_name, _stake, _address));
     }
     stakeHolderVoted[msg.sender] = true; // mark the stakeHolder as voted
 }
@@ -83,33 +84,44 @@ else {
 
 }
 
-function evaluateResults () public returns(uint){
+function evaluateResults () public {
+    uint tempA = 0;
+    uint tempB = 0;
     for (uint i = 0; i < inFavour.length; i++){
-        stakesInFavour += inFavour[i].stakes;
+        tempA += inFavour[i].stakes;
     }
     for (uint j = 0; j < inFavourCoFounders.length; j++){
-        stakesInFavour += inFavourCoFounders[j].stakes;
+        tempB += inFavourCoFounders[j].stakes;
     }
+    stakesInFavour = tempA + tempB;
+}
+// function paymentToAddress (uint _amount, address payable _sendTo) public payable {
+
+// emit PaymentInitiated (msg.sender, _amount);
+// require(addressToStakeholder[msg.sender].stakes > 0 || addressToCoFounder[msg.sender].stakes > 0);
+// require(address(this).balance >= _amount, "Insufficient balance for the transaction to occur.");
+
+// if (stakesInFavour >= requiredMajority){
+
+// uint TransferAmount = _amount;
+// (_sendTo).transfer(TransferAmount);
+// emit PaymentSuccessful(_amount, _sendTo);
+
+// }
+
+// else {
+//     emit PaymentUnsuccessful();
+//     }
+// }
+// receive() payable external{
+// }
+
+function demoFunction () public view returns(uint){
+    if(stakesInFavour > requiredMajority){
     return stakesInFavour;
-}
-
-
-function paymentToAddress (uint _amount, address payable _sendTo) public payable {
-
-emit PaymentInitiated (msg.sender, _amount);
-require(addressToStakeholder[msg.sender].stakes > 0 || addressToCoFounder[msg.sender].stakes > 0);
-require(address(this).balance >= _amount, "Insufficient balance for the transaction to occur.");
-
-if (stakesInFavour >= requiredMajority){
-
-uint TransferAmount = _amount;
-(_sendTo).transfer(TransferAmount);
-emit PaymentSuccessful(_amount, _sendTo);
-
-}
-
-else {
-    emit PaymentUnsuccessful();
+    }
+    else{
+        return requiredMajority;
     }
 }
 }

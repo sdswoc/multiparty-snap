@@ -8,7 +8,7 @@ async function main() {
 
   const Multisignature = await ethers.getContractFactory("Multisignature")
   console.log("Deploying contract...")
-  const contract = await Multisignature.deploy("myCompany", 51, [({name: "Eminem", stakes: 21, coFounderAddress: "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"})])
+  const contract = await Multisignature.deploy("myCompany", 51, [({name: "Saurabh", stakes: 21, coFounderAddress: "0x38d4948cf9cb91d1aaede05160a8990c662d8a6c"})])
   await contract.deployed()
   console.log(`Deployed contract to: ${contract.address}`)
   // The contract is deployed to haradhat localhost
