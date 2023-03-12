@@ -1,5 +1,5 @@
-export const contractAddress = "0x653A46Aa367B45AE27b23ae074efD5a249CCFC66"
-export const abi =[
+export const contractAddress = "0x130248DaCc63126541f21D6B98307b006a9e90e8"
+export const abi = [
   {
     "inputs": [
       {
@@ -173,48 +173,6 @@ export const abi =[
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "coFounders",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "stakes",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "coFounderAddress",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "demoFunction",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "evaluateResults",
     "outputs": [],
@@ -232,6 +190,24 @@ export const abi =[
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_sendTo",
+        "type": "address"
+      }
+    ],
+    "name": "paymentToAddress",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -291,5 +267,9 @@ export const abi =[
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]
