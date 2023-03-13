@@ -9,7 +9,7 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 module.exports = {
   solidity: "0.8.17",
-  defaultNetwork: "hardhat",   
+  defaultNetwork: "polygon_mumbai",   
   networks: {
     polygon_mumbai: {      
     url: "https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78",
