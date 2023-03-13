@@ -124,13 +124,4 @@ contract Multisignature {
     }
 
     receive() external payable {}
-
-    // function demoFunction () public view returns(uint){
-    //     if(stakesInFavour > requiredMajority){
-    //     return requiredMajority;
-    //     }
-    //     else{
-    //         return stakesInFavour;
-    //     }
-    // }
 }

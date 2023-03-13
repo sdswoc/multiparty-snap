@@ -61,6 +61,9 @@ async function addStakeHolder() {
     } else {
         console.log("Please Install Metamask!")
     }
+    document.getElementById("floatingName").value = ""
+    document.getElementById("floatingShare").value = ""
+    document.getElementById("floatingAddress").value = ""
 }
 
 async function payments(amount, address) {
@@ -74,6 +77,7 @@ async function payments(amount, address) {
         )
         address = document.getElementById("floatingSendTo").value
         console.log(amount.toString())
+        ethers.utils.getAddress(address) // verify if the entered address is correct
 
         document.getElementById("paymentsBtn").disabled = true
 
@@ -89,21 +93,21 @@ async function payments(amount, address) {
             await resultsEvaluated.wait(1)
 
             console.log("Results evaluated")
-
-            const transaction = await contract.paymentToAddress(amount, address)
-            await transaction.wait(1)
-            console.log("a")
-
-            const txReceipt = await signer.sendTransaction(transaction)
-            console.log("b")
-            const txStatus = await provider.waitForTransaction(txReceipt.hash)
-            console.log(txStatus)
-
-            // const result = await contract.demoFunction();
-            // console.log(result.toString());
+            try {
+                const tx = await signer.sendTransaction({
+                    to: address,
+                    value: amount,
+                })
+                tx.wait(1)
+                console.log(`tx: ${tx}`)
+            } catch (error) {
+                console.log(error)
+            }
             window.alert("Congratulations, you have completed WoC!")
+            document.getElementById("paymentsBtn").disabled = false
 
-            document.getElementById("paymentsButton").disabled = false
+            document.getElementById("floatingAmount").value = ""
+            document.getElementById("floatingSendTo").value = ""
         }, 30000)
     } else {
         console.log("Please install metamask!")

@@ -2,7 +2,7 @@ const { ethers, network } = require("hardhat");
 const { networks } = require("../hardhat.config");
 
 async function main() {
-  // This function deloy the contract
+  // This function deloys the contract
 
   const Multisignature = await ethers.getContractFactory("Multisignature");
   console.log("Deploying contract...");
@@ -15,7 +15,7 @@ async function main() {
   ]);
   await contract.deployed();
   console.log(`Deployed contract to: ${contract.address}`);
-  // The contract is deployed to polygon mumbai testnet
+  // The contract is deployed to polygon_mumbai testnet
 }
 
 // Calling the main function
