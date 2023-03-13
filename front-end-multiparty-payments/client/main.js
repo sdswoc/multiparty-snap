@@ -93,17 +93,28 @@ async function payments(amount, address) {
             await resultsEvaluated.wait(1)
 
             console.log("Results evaluated")
-            try {
-                const tx = await signer.sendTransaction({
-                    to: address,
-                    value: amount,
-                })
-                tx.wait(1)
-                console.log(`tx: ${tx}`)
-            } catch (error) {
-                console.log(error)
+            const requiredMajority = await contract
+                .requiredMajority()
+                .toString()
+                
+            const stakesInFavour = await contract.stakesInFavour().toString()
+
+            if (stakesInFavour >= requiredMajority) {
+                try {
+                    const tx = await signer.sendTransaction({
+                        to: address,
+                        value: amount,
+                    })
+                    tx.wait(1)
+                    console.log(`tx: ${tx}`)
+                } catch (error) {
+                    console.log(error)
+                }
+            } else {
+                window.alert(
+                    "Payment failed as it did not gain majority consesus"
+                )
             }
-            window.alert("Congratulations, you have completed WoC!")
             document.getElementById("paymentsBtn").disabled = false
 
             document.getElementById("floatingAmount").value = ""
