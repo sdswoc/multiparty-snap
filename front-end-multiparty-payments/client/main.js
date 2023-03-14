@@ -96,7 +96,7 @@ async function payments(amount, address) {
             const requiredMajority = await contract
                 .requiredMajority()
                 .toString()
-                
+
             const stakesInFavour = await contract.stakesInFavour().toString()
 
             if (stakesInFavour >= requiredMajority) {
@@ -107,19 +107,22 @@ async function payments(amount, address) {
                     })
                     tx.wait(1)
                     console.log(`tx: ${tx}`)
+                    socket.emit("paymentSuccessful")
                 } catch (error) {
                     console.log(error)
+                    socket.emit("paymentUnsuccessful")
                 }
             } else {
-                window.alert(
-                    "Payment failed as it did not gain majority consesus"
-                )
+                socket.emit("paymentUnsuccessful")
             }
             document.getElementById("paymentsBtn").disabled = false
 
             document.getElementById("floatingAmount").value = ""
             document.getElementById("floatingSendTo").value = ""
-        }, 30000)
+
+            const reset = await contract.reset()
+            await reset.wait(1)
+        }, 30000) // A set time period is allowed for voting before we proceed
     } else {
         console.log("Please install metamask!")
     }
@@ -131,7 +134,7 @@ socket.on("voteForPayment", async () => {
     const signer = provider.getSigner()
     const contract = new ethers.Contract(contractAddress, abi, signer)
 
-    let message = `Test Message`
+    let message = `Do you approve of the initiated transaction?`
 
     const signature = await signer.signMessage(message)
     console.log(signature)
@@ -139,6 +142,16 @@ socket.on("voteForPayment", async () => {
     const shareHolderVoted = await contract.voteForPayment(true)
     await shareHolderVoted.wait(1)
     window.alert("You have voted in favour of the payment!")
+})
+
+socket.on("alertSuccessful", async () => {
+    console.log("Socket is working")
+    window.alert("The transaction was completed successfully!")
+})
+
+socket.on("alertUnsuccessful", async () => {
+    console.log("Socket is working")
+    window.alert("Sorry, the transaction failed!")
 })
 
 function listenForAddingStakeHolders(addedStakeHolder, provider) {
