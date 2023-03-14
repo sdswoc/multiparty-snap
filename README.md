@@ -55,13 +55,11 @@ You can edit the relevant details like name of the organisation, required majori
 
 [Saurabh Rana](https://github.com/Quebula17)
 
-Mentors 
+## Mentors 
 
+- [Jainil Patel](https://github.com/jainl28patel)
 
-
--[Jainil Patel](https://github.com/jainl28patel)
-
--[Darshan Kumar](https://github.com/itsdarshankumar)
+- [Darshan Kumar](https://github.com/itsdarshankumar)
 
 ## License 
 
