@@ -86,7 +86,7 @@ contract Multisignature {
                 uint _stake = addressToCoFounder[msg.sender].stakes;
                 inFavourCoFounders.push(coFounder(_name, _stake, msg.sender));
             }
-            stakeHolderVoted[msg.sender] = true; // mark the stakeHolder as voted
+            stakeHolderVoted[msg.sender] = true; // Mark the stakeHolder as voted
         } else {
             stakeHolderVoted[msg.sender] = true;
         }

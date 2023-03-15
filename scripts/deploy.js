@@ -2,7 +2,7 @@ const { ethers, network } = require("hardhat");
 const { networks } = require("../hardhat.config");
 
 async function main() {
-  // This function deloys the contract
+  // This function deploys the contract
 
   const Multisignature = await ethers.getContractFactory("Multisignature");
   console.log("Deploying contract...");
@@ -11,7 +11,7 @@ async function main() {
       name: "Saurabh",
       stakes: 21,
       coFounderAddress: "0x38d4948cf9cb91d1aaede05160a8990c662d8a6c",
-    },
+    }, // Deploying the contract with relevant inputs to the constructor
   ]);
   await contract.deployed();
   console.log(`Deployed contract to: ${contract.address}`);

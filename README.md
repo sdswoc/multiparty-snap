@@ -44,6 +44,8 @@ in the root of the repository.
 7. Change your directory by running ```cd front-end-multiparty-payments ``` and run the node server by running the command ``` node ./server/server.js ```.
 Open ``` localhost:5500/front-end-multiparty-payments/```. Now you can interact with the dApp.
 
+8. You may get an error while running the node server, you can fix that using [Allow CORS](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en) Chrome extension.
+
 ## Description
 You can add a new ShareHolder to the organisation by specifying their share, name and wallet address.
 

@@ -6,10 +6,10 @@ io.on("connection", (socket) => {
     })
 
     socket.on("paymentSuccessful", () => {
-        socket.broadcast.emit("alertSuccessful")
+        io.emit("alertSuccessful")
     })
 
     socket.on("paymentUnsuccessful", () => {
-        socket.broadcast.emit("alertUnsuccessful")
+        io.emit("alertUnsuccessful")
     })
 })

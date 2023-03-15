@@ -18,6 +18,7 @@ async function connect() {
     if (typeof window.ethereum !== undefined) {
         try {
             const accounts = await window.ethereum.request({
+                // Connecting user's MetaMask to the dApp
                 method: "eth_requestAccounts",
             })
             activeAccount.innerHTML = `Connected Account: ${accounts[0]}`
@@ -36,11 +37,13 @@ async function addStakeHolder() {
     const address = document.getElementById("floatingAddress").value
 
     if (typeof window.ethereum !== undefined) {
+        // Checks if the user has MetaMask
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
-        const contract = new ethers.Contract(contractAddress, abi, signer)
+        const contract = new ethers.Contract(contractAddress, abi, signer) // Creates an instance of the contract
 
         try {
+            ethers.utils.getAddress(address) // Verify the address
             console.log("Initialising...")
             const addedStakeHolder = await contract.addStakeHolder(
                 name,
@@ -77,12 +80,16 @@ async function payments(amount, address) {
         )
         address = document.getElementById("floatingSendTo").value
         console.log(amount.toString())
-        ethers.utils.getAddress(address) // verify if the entered address is correct
+        ethers.utils.getAddress(address) // Verify if the entered address is correct
 
         document.getElementById("paymentsBtn").disabled = true
 
-        const coFounderVoted = await contract.voteForPayment(true)
-        await coFounderVoted.wait(1)
+        try {
+            const coFounderVoted = await contract.voteForPayment(true)
+            await coFounderVoted.wait(1) // Waits for the transaction to be mined
+        } catch (error) {
+            console.log(error)
+        }
 
         console.log("Button disabled")
         socket.emit("paymentInitiated")
@@ -98,6 +105,7 @@ async function payments(amount, address) {
                 .toString()
 
             const stakesInFavour = await contract.stakesInFavour().toString()
+            console.log(stakesInFavour)
 
             if (stakesInFavour >= requiredMajority) {
                 try {
@@ -136,12 +144,16 @@ socket.on("voteForPayment", async () => {
 
     let message = `Do you approve of the initiated transaction?`
 
-    const signature = await signer.signMessage(message)
-    console.log(signature)
+    try {
+        const signature = await signer.signMessage(message)
+        console.log(signature)
 
-    const shareHolderVoted = await contract.voteForPayment(true)
-    await shareHolderVoted.wait(1)
-    window.alert("You have voted in favour of the payment!")
+        const shareHolderVoted = await contract.voteForPayment(true)
+        await shareHolderVoted.wait(1)
+        window.alert("You have voted in favour of the payment!")
+    } catch (error) {
+        consosle.log(error)
+    }
 })
 
 socket.on("alertSuccessful", async () => {
@@ -154,7 +166,7 @@ socket.on("alertUnsuccessful", async () => {
     window.alert("Sorry, the transaction failed!")
 })
 
-function listenForAddingStakeHolders(addedStakeHolder, provider) {
+function listenForAddingStakeHolders(addedStakeHolder, provider) { // Listens when a new ShareHolder is added
     console.log(`Mining ${addedStakeHolder.hash}`)
     return new Promise((resolve, reject) => {
         try {
