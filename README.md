@@ -37,14 +37,12 @@ in the root of the repository.
 
 4. Create a ``` .env ``` file and create a variable ``` PRIVATE_KEY``` and assign it the value of private key of a MetaMask wallet (It is recommended to not use an actual wallet, instead make a new wallet).
 
-5. Deploy the contract on the Polygon Mumbai testnet by running the command ``` yarn hardhat run --network polygon_mumbai scripts/deploy.js ``` in the root of your directory.
+5. Deploy the contract on the Polygon Mumbai testnet by running the command ``` yarn hardhat run --network polygon_mumbai scripts/deploy.js ``` in the root of your directory. Now, copy the contract address in the terminal and paste that in the ``` constants.js ``` file.
 
 6. Use [Polygon Faucet](https://faucet.polygon.technology) to get test MATIC cryptocurrrency by entering your wallet's address.
 
 7. Change your directory by running ```cd front-end-multiparty-payments ``` and run the node server by running the command ``` node ./server/server.js ```.
 Open ``` localhost:5500/front-end-multiparty-payments/```. Now you can interact with the dApp.
-
-8. You may get an error while running the node server, you can fix that using [Allow CORS](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en) Chrome extension.
 
 ## Description
 You can add a new ShareHolder to the organisation by specifying their share, name and wallet address.
